@@ -2,3 +2,5 @@ venv
 .env*
 .vscode
 static
+settings_local.py
+__pycache__
