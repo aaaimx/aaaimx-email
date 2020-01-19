@@ -1,3 +1,6 @@
+# First steps with Django
+# https://docs.celeryproject.org/en/latest/django/first-steps-with-django.html
+
 from __future__ import absolute_import
 from django.conf import settings
 import os

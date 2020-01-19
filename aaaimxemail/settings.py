@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+
+# https://pypi.org/project/dj-database-url/
+import dj_database_url
+
+# Django Celery
+# https://pypi.org/project/django-celery/
 from celery.schedules import crontab
 import djcelery
 djcelery.setup_loader()
@@ -42,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'djcelery_email',
     'djcelery',
+    'emails',
 ]
 
 MIDDLEWARE = [
@@ -75,16 +82,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'aaaimxemail.wsgi.application'
 
-# Celery
-CELERY_EMAIL_TASK_CONFIG = {
-    'queue': 'email',
-    'rate_limit': '50/m',
-}
+# Django Celery
+# https://pypi.org/project/django-celery/
 
-CELERY_EMAIL_TASK_CONFIG = {
-    'name': 'djcelery_email_send',
-    'ignore_result': True,
-}
+CELERY_BROKER_URL = os.environ.get('CLOUDAMQP_URL')
 
 # CELERY_IMPORTS = ('portal.tasks', 'booking.tasks',)
 CELERY_ACCEPT_CONTENT = ['application/json']
@@ -99,11 +100,20 @@ CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
 #     },
 # }
 
-# Celery Email
-# Email Service Configuration
-EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
-CELERY_BROKER_URL = os.environ.get('CLOUDAMQP_URL')
+# Django Celery Email
+# https://pypi.org/project/django-celery-email/
 
+CELERY_EMAIL_TASK_CONFIG = {
+    'queue': 'email',
+    'rate_limit': '50/m',
+}
+
+CELERY_EMAIL_TASK_CONFIG = {
+    'name': 'djcelery_email_send',
+    'ignore_result': True,
+}
+
+EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.hostinger.mx' # dedrelay.secureserver.net
 EMAIL_PORT = 587
@@ -116,11 +126,16 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'd1ktfm8ubtqo5o',
     }
 }
 
+# Database URL
+# https://pypi.org/project/dj-database-url/
+
+URL = os.environ.get('DB_URI', None)
+DATABASES['default'] = dj_database_url.config(default=URL, conn_max_age=600)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -164,8 +179,12 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, "sfiles"),)
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
+# Static files in Heroku
+# http://whitenoise.evans.io/en/stable/
+
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+# Dev environment
 try:
     from settings_local import *
 except ImportError:
