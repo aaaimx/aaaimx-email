@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'aaaimxemail.wsgi.application'
 
 CELERY_BROKER_URL = os.environ.get('CLOUDAMQP_URL')
 
-# CELERY_IMPORTS = ('portal.tasks', 'booking.tasks',)
+CELERY_IMPORTS = ('emails.tasks',)
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -110,9 +110,9 @@ CELERY_EMAIL_TASK_CONFIG = {
 
 CELERY_EMAIL_TASK_CONFIG = {
     'name': 'djcelery_email_send',
-    'ignore_result': True,
+    'ignore_result': False,
 }
-
+CELERY_EMAIL_CHUNK_SIZE = 1
 EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.hostinger.mx' # dedrelay.secureserver.net
