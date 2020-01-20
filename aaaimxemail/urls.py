@@ -17,21 +17,11 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf import settings
 from django.conf.urls import include, url
-from django.contrib.auth.models import User
-
 
 # static files imports
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-
-# Simple JWT
-# https://github.com/davesque/django-rest-framework-simplejwt
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-    TokenVerifyView,
-)
 
 # Django REST Frammework
 # https://www.django-rest-framework.org
@@ -52,9 +42,6 @@ admin.site.site_url = "/api"
 
 urlpatterns = [
     path('', admin.site.urls),
-    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("api/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-    path("api/token/verify/", TokenVerifyView.as_view(), name="token_verify"),
     url(r"^api/", include(router.urls)),
 ]
 
