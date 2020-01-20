@@ -10,7 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+# standard imports
+import sys
 import os
+import datetime
+
+# Django Imports
+from django.contrib import messages
 
 # https://pypi.org/project/dj-database-url/
 import dj_database_url
@@ -46,9 +52,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'djcelery_email',
     'djcelery',
     'emails',
+
 ]
 
 MIDDLEWARE = [
@@ -63,6 +71,52 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'aaaimxemail.urls'
+
+
+# Django REST Frammework
+# https://www.django-rest-framework.org/#installation
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly",
+        # 'rest_framework.permissions.IsAdminUser'
+    ],
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+
+        # https://github.com/davesque/django-rest-framework-simplejwt
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 10,
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
+}
+
+# Simple JWT
+# https://github.com/davesque/django-rest-framework-simplejwt
+
+JWT_AUTH = {
+    "JWT_ALLOW_REFRESH": True,
+    "JWT_EXPIRATION_DELTA": datetime.timedelta(seconds=10),
+    "JWT_REFRESH_EXPIRATION_DELTA": datetime.timedelta(minutes=15),
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(hours=1),
+    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(hours=1),
+}
+
+MESSAGE_TAGS = {
+    messages.SUCCESS: "alert-success success",
+    messages.WARNING: "alert-warning warning",
+    messages.ERROR: "alert-danger error",
+}
+
+DAB_FIELD_RENDERER = "django_admin_bootstrapped.renderers.BootstrapFieldRenderer"
 
 TEMPLATES = [
     {
