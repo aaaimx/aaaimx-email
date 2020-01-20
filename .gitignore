@@ -4,3 +4,4 @@ venv
 static
 settings_local.py
 __pycache__
+media/
