@@ -7,8 +7,7 @@ from .utils import parse_template
 
 @admin.register(Template)
 class AdminTemplate(admin.ModelAdmin):
-    list_display_links = ('pk', 'name',)
-    list_display = ('pk', 'name', 'file', 'keys')
+    list_display = ('name', 'file_name', 'keys')
     list_filter = ('name',)
 
 @admin.register(Email)

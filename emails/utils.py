@@ -2,7 +2,8 @@
 from django.conf import settings
 
 def parse_template(context, template):
-    message_content = str(open(settings.BASE_DIR + template.file.url, 'r').read())
+    path = settings.BASE_DIR + '/templates/email/' + template.file_name
+    message_content = str(open(path, 'r').read())
     for key in template.keys:
         message_content = message_content.replace('{{' + key + '}}', context[key])
     return message_content

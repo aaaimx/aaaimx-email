@@ -7,7 +7,7 @@ class Template(models.Model):
     def __str__(self):
         return self.name
     name = models.CharField(default=uuid4, primary_key=True, editable=True, max_length=200)
-    file = models.FileField(upload_to="templates", null=True, blank=True)
+    file_name = models.CharField(default="", max_length=100, null=True)
     keys = ArrayField(models.CharField(
         default="", max_length=200, null=True), size=20, default=list)
 
