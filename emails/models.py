@@ -16,9 +16,9 @@ class Email(models.Model):
     def __str__(self):
         return self.subject
     template = models.ForeignKey(Template, null=True, blank=True, on_delete=models.SET_NULL)
-    subject = models.CharField(default="", max_length=200, blank=True)
+    subject = models.CharField(default="", max_length=100, blank=True)
     message = models.CharField(default="", max_length=200, blank=True)
     sent = models.IntegerField(default=0, blank=True)
     context = JSONField()
     recipients = ArrayField(models.CharField(
-        default="", max_length=200, null=True), size=20, default=list)
+        default="", max_length=200, null=True), size=30, default=list)
