@@ -10,7 +10,7 @@ from celery import Celery
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'aaaimxemail.settings')
 
 
-app = Celery(broker=settings.CELERY_BROKER_URL)
+app = Celery(broker=settings.CELERY_BROKER_URL, backend='amqp://')
 app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(settings.INSTALLED_APPS)
 

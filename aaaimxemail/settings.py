@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'djcelery_email',
+    # 'django_celery_results',
     'djcelery',
     'emails',
 
@@ -96,7 +97,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.BasicAuthentication",
         
         # https://github.com/davesque/django-rest-framework-simplejwt
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+       'rest_framework_simplejwt.authentication.JWTTokenUserAuthentication',
     ),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 10,
@@ -146,8 +147,10 @@ WSGI_APPLICATION = 'aaaimxemail.wsgi.application'
 # Django Celery
 # https://pypi.org/project/django-celery/
 
-CELERY_BROKER_URL = os.environ.get('CLOUDAMQP_URL')
 
+CELERY_BROKER_URL = os.environ.get('CLOUDAMQP_URL')
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'django-cache'
 CELERY_IMPORTS = ('emails.tasks',)
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'

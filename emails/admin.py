@@ -14,6 +14,7 @@ class AdminTemplate(admin.ModelAdmin):
 class AdminEmail(admin.ModelAdmin):
     list_display = ('pk', 'subject', 'message', 'template', 'recipients', 'sent')
     list_filter = ('subject', 'message', 'recipients', 'template', 'sent' )
+    search_fields = ('message', 'recipients')
     actions = ['send_email_from_contact',]
 
     def send_email_from_contact(self, request, queryset):
