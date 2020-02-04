@@ -116,6 +116,8 @@ JWT_AUTH = {
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": datetime.timedelta(hours=1),
     "REFRESH_TOKEN_LIFETIME": datetime.timedelta(hours=1),
+    "USER_ID_FIELD": "username",
+    'USER_ID_CLAIM': 'username',
 }
 
 MESSAGE_TAGS = {
