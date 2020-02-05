@@ -1,5 +1,6 @@
 venv
-.env*
+.env
+.env.production
 .vscode
 static
 settings_local.py
