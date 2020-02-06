@@ -18,10 +18,13 @@ class EmailViewSet(viewsets.ModelViewSet):
 
     def send_email(self, data):
         pk = data.get('template', None)
-        template = Template.objects.get(pk=pk)
-        if template is not None:
+        if pk is not None:
+            template = Template.objects.get(pk=pk)
             tmp = parse_template(data['context'], template)
             send_email(data['subject'], data['message'], data['recipients'], tmp)
+        else:
+            send_email(data['subject'], data['message'], data['recipients'], None)
+
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
