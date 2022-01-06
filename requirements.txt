@@ -2,7 +2,7 @@ amqp==1.4.9
 anyjson==0.3.3
 asgiref==3.2.3
 billiard==3.3.0.23
-celery==3.1.26.post2
+celery==5.2.2
 dj-database-url==0.5.0
 Django==3.0.2
 django-appconf==1.0.3
